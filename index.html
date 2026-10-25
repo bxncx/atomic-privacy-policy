@@ -25,10 +25,10 @@
     }
 
     * { box-sizing: border-box; }
-    html {
-  scroll-behavior: smooth;
-}
 
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       margin: 0;
@@ -231,6 +231,7 @@
     main { min-width: 0; }
 
     .policy-card {
+      position: relative;
       margin-bottom: 24px;
       padding: 34px;
       border: 1px solid var(--border);
@@ -240,11 +241,13 @@
     }
 
     .section-number {
-      display: inline-grid;
+      position: absolute;
+      top: 34px;
+      left: 34px;
+      display: grid;
       place-items: center;
       width: 38px;
       height: 38px;
-      margin-bottom: 16px;
       border-radius: 12px;
       background: rgba(79, 140, 255, .14);
       border: 1px solid rgba(79, 140, 255, .28);
@@ -253,8 +256,11 @@
       font-size: 15px;
     }
 
-    h2 {
-      margin: 0 0 16px;
+    .policy-card h2 {
+      margin: 0 0 16px 54px;
+      min-height: 38px;
+      display: flex;
+      align-items: center;
       font-size: 1.65rem;
       letter-spacing: -.03em;
       line-height: 1.2;
@@ -395,18 +401,44 @@
     }
 
     @media (max-width: 920px) {
-      .layout { grid-template-columns: 1fr; gap: 30px; }
-      .sidebar { position: static; }
-      .nav-links { display: none; }
-      .info-grid { grid-template-columns: 1fr; }
-      .policy-card { padding: 26px; }
+      .layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .sidebar {
+        position: static;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .policy-card {
+        padding: 26px;
+      }
+
+      .section-number {
+        top: 26px;
+        left: 26px;
+      }
+
+      .policy-card h2 {
+        margin-left: 50px;
+      }
 
       .contact-row {
         flex-direction: column;
         gap: 4px;
       }
 
-      .contact-row span:last-child { text-align: left; }
+      .contact-row span:last-child {
+        text-align: left;
+      }
     }
   </style>
 </head>
@@ -604,7 +636,7 @@
           These actions are intended to protect servers, but automated detection can make mistakes. Server administrators should configure security settings carefully and provide an appropriate way to review disputed actions.
         </p>
         <p>
-          Where legally required, information about relevant automated decision-making, its consequences, and available rights will be provided. Under EU data protection law, individuals have rights relating to automated decision-making and profiling. [1][2]
+          Where legally required, information about relevant automated decision-making, its consequences, and available rights will be provided. Under EU data protection law, individuals have rights relating to automated decision-making and profiling.
         </p>
       </article>
 
@@ -636,7 +668,7 @@
           <li>Lodge a complaint with a competent data protection supervisory authority.</li>
         </ul>
         <p>
-          GDPR rights include the rights to be informed, access, rectification, erasure, restriction of processing, data portability, objection, and rights relating to automated decision-making. [1][2][10]
+          GDPR rights include the rights to be informed, access, rectification, erasure, restriction of processing, data portability, objection, and rights relating to automated decision-making.
         </p>
         <p>
           Requests can be submitted to <a href="mailto:[your-real-privacy-email]">[your-real-privacy-email]</a>. We may need sufficient information to verify and respond to a request securely.
@@ -713,5 +745,32 @@
       <span>Privacy Policy • Last updated: October 25, 2026</span>
     </div>
   </footer>
+
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', event => {
+        const targetId = link.getAttribute('href').slice(1);
+        const target = document.getElementById(targetId);
+
+        if (!target) return;
+
+        event.preventDefault();
+
+        const headerHeight = document.querySelector('header').offsetHeight;
+        const targetPosition =
+          target.getBoundingClientRect().top +
+          window.scrollY -
+          headerHeight -
+          10;
+
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+
+        history.replaceState(null, '', '#' + targetId);
+      });
+    });
+  </script>
 </body>
 </html>
